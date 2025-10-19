@@ -7,6 +7,12 @@ import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 // ページネーションの追加に必要なデータ取得関数
 import { fetchInvoicesPages } from "@/app/lib/data";
+import { Metadata } from "next";
+
+// メタデータの設定
+export const metadata: Metadata = {
+  title: "Invoices",
+};
 
 export default async function Page(props: {
   searchParams?: Promise<{ query?: string; page?: string }>;

@@ -6,6 +6,11 @@ import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { fetchInvoiceById, fetchCustomers } from "@/app/lib/data";
 // next/navigationからnotFoundをインポート
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "edit",
+};
 
 // propsからidを取得してinvoiceデータを取得
 export default async function Page(props: { params: Promise<{ id: string }> }) {
