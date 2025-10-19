@@ -1,4 +1,7 @@
 "use server"; // サーバーサイドで実行されることを明示
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+
 // 型検証のためのライブラリをインポート
 import { z } from "zod";
 // revaldatePathの型をインポート
@@ -128,4 +131,24 @@ export async function deleteInvoice(id: string) {
   await sql`DELETE FROM invoices WHERE id = ${id}`;
   // データベースを更新した後に、ユーザーのブラウザのキャッシュを削除
   revalidatePath("/dashboard/invoices");
+}
+
+// サインイン用のサーバーアクション
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
+  }
 }
