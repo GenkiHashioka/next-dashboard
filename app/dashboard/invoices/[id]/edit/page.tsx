@@ -4,6 +4,9 @@ import Form from "@/app/ui/invoices/edit-form";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 // 顧客データを取得する関数をインポート
 import { fetchInvoiceById, fetchCustomers } from "@/app/lib/data";
+// next/navigationからnotFoundをインポート
+import { notFound } from "next/navigation";
+
 // propsからidを取得してinvoiceデータを取得
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   // paramsからidを取得
@@ -14,6 +17,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     fetchInvoiceById(id),
     fetchCustomers(),
   ]);
+  // invoiceが存在しない場合は404エラーページを表示
+  if (!invoice) {
+    notFound();
+  }
+
   return (
     <main>
       <Breadcrumbs
